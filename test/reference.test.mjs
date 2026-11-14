@@ -1,0 +1,16 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {generateKeyPairSync,sign} from 'node:crypto';
+import {permitBytes,consumePermit} from '../src/index.mjs';
+const {publicKey,privateKey}=generateKeyPairSync('ed25519');
+const p={v:1,kid:'lab',id:'one',sub:'nca',org:'demo',aud:'worker',action:'publish',digest:'a'.repeat(64),epoch:1,iat:100,exp:180};
+const env={payload:p,signature:sign(null,permitBytes(p),privateKey).toString('hex')};
+const keys=new Map([['lab',publicKey]]);
+const expected={sub:p.sub,org:p.org,aud:p.aud,action:p.action,digest:p.digest};
+const state={org:'demo',epoch:1,veto:false,observedAt:100};
+test('one use',()=>{const used=new Set();assert.equal(consumePermit(env,keys,expected,state,used,100),true);assert.equal(consumePermit(env,keys,expected,state,used,100),false)});
+test('veto',()=>assert.equal(consumePermit(env,keys,expected,{...state,veto:true},new Set(),100),false));
+test('new epoch',()=>assert.equal(consumePermit(env,keys,expected,{...state,epoch:2},new Set(),100),false));
+test('target binding',()=>assert.equal(consumePermit(env,keys,{...expected,digest:'b'.repeat(64)},state,new Set(),100),false));
+test('tamper',()=>assert.equal(consumePermit({...env,payload:{...p,exp:181}},keys,expected,state,new Set(),100),false));
+test('stale state',()=>assert.equal(consumePermit(env,keys,expected,state,new Set(),131),false));
