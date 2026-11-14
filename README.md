@@ -47,3 +47,9 @@ Public source visibility is not a license grant. See [LICENSE](LICENSE).
 ## Security hardening v0.2
 
 [Implementation](src/replay-store.mjs) · [Tests](test/replay-store.test.mjs) · [Evidence and limitations](docs/HARDENING_V0_2.md).
+
+## Security composition v0.3
+
+An additional signed authorization decision binds the exact permit digest, current policy epoch and veto epoch. Trusted host supplies current state and independently pinned signing authorities. Legacy APIs remain; no production issuer, distributed atomicity or external execution is claimed.
+
+[Implementation](src/decision-bound.mjs) · [Tests](test/decision-bound.test.mjs) · [Scope and evidence](docs/COMPOSITION_V0_3.md).
