@@ -43,3 +43,7 @@ No approval issuer, real Owner enrollment, Face ID, database transactions, distr
 Public source visibility is not a license grant. See [LICENSE](LICENSE).
 
 **Architecture Before Implementation. Evidence Before Trust.**
+
+## Security hardening v0.2
+
+[Implementation](src/replay-store.mjs) · [Tests](test/replay-store.test.mjs) · [Evidence and limitations](docs/HARDENING_V0_2.md).
