@@ -1,0 +1,160 @@
+TAP version 13
+# Subtest: both signed authorities and one-time use
+ok 1 - both signed authorities and one-time use
+  ---
+  duration_ms: 3.74872
+  type: 'test'
+  ...
+# Subtest: missing decision denied
+ok 2 - missing decision denied
+  ---
+  duration_ms: 1.512205
+  type: 'test'
+  ...
+# Subtest: signed substitute permit denied
+ok 3 - signed substitute permit denied
+  ---
+  duration_ms: 0.34555
+  type: 'test'
+  ...
+# Subtest: policy change and veto deny
+ok 4 - policy change and veto deny
+  ---
+  duration_ms: 0.409957
+  type: 'test'
+  ...
+# Subtest: decision expiry and signature tampering denied
+ok 5 - decision expiry and signature tampering denied
+  ---
+  duration_ms: 0.337468
+  type: 'test'
+  ...
+# Subtest: durable outbox binds the exact verified permit digest
+ok 6 - durable outbox binds the exact verified permit digest
+  ---
+  duration_ms: 2.558109
+  type: 'test'
+  ...
+# Subtest: one use
+ok 7 - one use
+  ---
+  duration_ms: 2.45219
+  type: 'test'
+  ...
+# Subtest: veto
+ok 8 - veto
+  ---
+  duration_ms: 0.230837
+  type: 'test'
+  ...
+# Subtest: new epoch
+ok 9 - new epoch
+  ---
+  duration_ms: 0.158168
+  type: 'test'
+  ...
+# Subtest: target binding
+ok 10 - target binding
+  ---
+  duration_ms: 0.183977
+  type: 'test'
+  ...
+# Subtest: tamper
+ok 11 - tamper
+  ---
+  duration_ms: 0.374874
+  type: 'test'
+  ...
+# Subtest: stale state
+ok 12 - stale state
+  ---
+  duration_ms: 0.176616
+  type: 'test'
+  ...
+# Subtest: two processes cannot consume the same permit
+ok 13 - two processes cannot consume the same permit
+  ---
+  duration_ms: 107.71481
+  type: 'test'
+  ...
+# Subtest: persistent consumption after reopen
+ok 14 - persistent consumption after reopen
+  ---
+  duration_ms: 3.842922
+  type: 'test'
+  ...
+# Subtest: two connections cannot both insert
+ok 15 - two connections cannot both insert
+  ---
+  duration_ms: 0.846374
+  type: 'test'
+  ...
+# Subtest: parameterized token
+ok 16 - parameterized token
+  ---
+  duration_ms: 0.595877
+  type: 'test'
+  ...
+# Subtest: invalid token fails
+ok 17 - invalid token fails
+  ---
+  duration_ms: 0.893775
+  type: 'test'
+  ...
+# Subtest: memory store disallowed
+ok 18 - memory store disallowed
+  ---
+  duration_ms: 0.143896
+  type: 'test'
+  ...
+# Subtest: file URI cannot bypass persistent path check
+ok 19 - file URI cannot bypass persistent path check
+  ---
+  duration_ms: 0.152289
+  type: 'test'
+  ...
+# Subtest: consumption and digest-only outbox survive reopen
+ok 20 - consumption and digest-only outbox survive reopen
+  ---
+  duration_ms: 1.955141
+  type: 'test'
+  ...
+# Subtest: outbox failure rolls back consumed permit
+ok 21 - outbox failure rolls back consumed permit
+  ---
+  duration_ms: 1.689572
+  type: 'test'
+  ...
+# Subtest: outbox read range is bounded
+ok 22 - outbox read range is bounded
+  ---
+  duration_ms: 1.188268
+  type: 'test'
+  ...
+# Subtest: new SQLite database is private on POSIX
+ok 23 - new SQLite database is private on POSIX
+  ---
+  duration_ms: 1.86083
+  type: 'test'
+  ...
+# Subtest: symlink database is rejected
+ok 24 - symlink database is rejected
+  ---
+  duration_ms: 1.11009
+  type: 'test'
+  ...
+# Subtest: existing database with broad POSIX permissions is rejected
+ok 25 - existing database with broad POSIX permissions is rejected
+  ---
+  duration_ms: 3.036609
+  type: 'test'
+  ...
+1..25
+# tests 25
+# suites 0
+# pass 25
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 565.353214

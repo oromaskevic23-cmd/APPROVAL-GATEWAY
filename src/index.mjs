@@ -1,4 +1,4 @@
-import {verify} from 'node:crypto';
+import {createHash,verify} from 'node:crypto';
 const fields=['v','kid','id','sub','org','aud','action','digest','epoch','iat','exp'];
 export function permitBytes(p) {
   if (!p || Object.keys(p).length!==fields.length || fields.some(k=>!Object.hasOwn(p,k))) throw Error('shape');
@@ -15,6 +15,7 @@ export function consumePermit(env,keys,expected,state,used,now) {
     if (!key || key.asymmetricKeyType!=='ed25519' || typeof s!=='string' || !/^[a-f0-9]{128}$/.test(s) || !verify(null,bytes,key,Buffer.from(s,'hex'))) return false;
     const token=JSON.stringify([p.org,p.id]);
     if (used.has(token)) return false;
-    used.add(token); return true;
+    // A compatible durable store can bind consumption evidence to this exact permit.
+    used.add(token,createHash('sha256').update(bytes).digest('hex')); return true;
   } catch { return false; }
 }

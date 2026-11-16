@@ -1,8 +1,12 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {generateKeyPairSync,sign} from 'node:crypto';
+import {mkdtempSync,rmSync} from 'node:fs';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
 import {permitBytes} from '../src/index.mjs';
 import {permitDigest,decisionBytes,consumeApprovedPermit} from '../src/decision-bound.mjs';
+import {ReplayStore} from '../src/replay-store.mjs';
 const a=generateKeyPairSync('ed25519'),d=generateKeyPairSync('ed25519');
 const signed=(payload,bytes,key)=>({payload,signature:sign(null,bytes(payload),key.privateKey).toString('hex')});
 const expected={sub:'agent',org:'demo',aud:'worker',action:'read',digest:'a'.repeat(64)};
@@ -17,3 +21,7 @@ test('missing decision denied',()=>assert.equal(consume(permit,null),false));
 test('signed substitute permit denied',()=>assert.equal(consume(signed({...payload,id:'two'},permitBytes,a)),false));
 test('policy change and veto deny',()=>{assert.equal(consume(permit,decision,{...state,policyEpoch:6}),false);assert.equal(consume(permit,decision,{...state,veto:true}),false);});
 test('decision expiry and signature tampering denied',()=>{assert.equal(consume(permit,decision,state,new Set(),130),false);assert.equal(consume(permit,{...decision,signature:'0'.repeat(128)}),false);});
+test('durable outbox binds the exact verified permit digest',()=>{
+  const dir=mkdtempSync(join(tmpdir(),'approval-evidence-'));const store=new ReplayStore(join(dir,'replay.db'));
+  try{assert.equal(consume(permit,decision,state,store),true);assert.equal(store.pendingEvents()[0].permitDigest,permitDigest(payload));}finally{store.close();rmSync(dir,{recursive:true,force:true});}
+});
